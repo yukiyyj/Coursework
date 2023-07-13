@@ -1,0 +1,40 @@
+##Load the Adult Census Data 
+Income = read.csv("C:/Users/yukiy/Downloads/Adult_Census_Income_Binary_Classification_dataset.csv",
+header=TRUE, sep=",", stringsAsFactors=FALSE) 
+
+str(Income)
+
+##create a bar plot of non-numeric features vs income, and then use the function to plot the features in the Income dataset
+
+## Bar plot of categorical features
+bar.income = function(x){
+  library(ggplot2)
+  if(!is.numeric(Income[,x])) {
+    plot(ggplot(Income, aes_string(x)) + geom_bar() + facet_grid(. ~income) +
+              theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
+              ggtitle(paste("Counts of income level by",x)))
+  }
+}
+ 
+## Set up plot area library(repr)
+options(repr.plot.width=8, repr.plot.height=4)
+
+## Features to plot
+name.list = function(x) {
+  names = names(x) 
+  len =length(names) 
+  names[-len]
+}
+
+feature.names = name.list(Income) 
+lapply(feature.names,bar.income)
+
+## Create Box plot of numeric features 
+box.income = function(x){
+  library(ggplot2)
+  if(is.numeric(Income[,x])) {
+      plot( ggplot(Income, aes_string('income', x)) +
+              geom_boxplot() +
+              ggtitle(paste("Counts of income level by",x)))
+  }}
+lapply(feature.names, box.income)
